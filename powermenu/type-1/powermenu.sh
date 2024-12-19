@@ -11,11 +11,11 @@
 
 # Current Theme
 dir="$HOME/.config/rofi/powermenu/type-1"
-theme='style-1'
+theme='style-2'
 
 # CMDs
-uptime="`uptime -p | sed -e 's/up //g'`"
-host=`hostname`
+uptime="$(uptime -p | sed -e 's/up //g')"
+host='archlinux'
 
 # Options
 shutdown=' Shutdown'
@@ -78,6 +78,8 @@ run_cmd() {
 				i3-msg exit
 			elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
 				qdbus org.kde.ksmserver /KSMServer logout 0 0 0
+			elif [[ "$DESKTOP_SESSION" == 'hyprland' ]]; then
+				hyprctl dispatch exit
 			fi
 		fi
 	else
@@ -88,23 +90,23 @@ run_cmd() {
 # Actions
 chosen="$(run_rofi)"
 case ${chosen} in
-    $shutdown)
-		run_cmd --shutdown
-        ;;
-    $reboot)
-		run_cmd --reboot
-        ;;
-    $lock)
-		if [[ -x '/usr/bin/betterlockscreen' ]]; then
-			betterlockscreen -l
-		elif [[ -x '/usr/bin/i3lock' ]]; then
-			i3lock
-		fi
-        ;;
-    $suspend)
-		run_cmd --suspend
-        ;;
-    $logout)
-		run_cmd --logout
-        ;;
+$shutdown)
+	run_cmd --shutdown
+	;;
+$reboot)
+	run_cmd --reboot
+	;;
+$lock)
+	if [[ -x '/usr/bin/betterlockscreen' ]]; then
+		betterlockscreen -l
+	elif [[ -x '/usr/bin/i3lock' ]]; then
+		i3lock
+	fi
+	;;
+$suspend)
+	run_cmd --suspend
+	;;
+$logout)
+	run_cmd --logout
+	;;
 esac
